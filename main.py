@@ -3,11 +3,21 @@ import openai
 import os
 
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()  # Load variables from .env
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
+
+# Add CORS middleware to allow all origins (you can specify specific origins if needed)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins (you can restrict this to specific domains)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, OPTIONS, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Load OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
