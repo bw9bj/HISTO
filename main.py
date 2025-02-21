@@ -12,6 +12,13 @@ app = FastAPI()
 # Load OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Root endpoint to handle GET requests at '/'
+@app.get("/")
+async def root():
+    return {"message": "FastAPI is running!"}
+
+# Your other endpoints (e.g., /compare) go here
+
 STANDARD_ANSWER = """
 Diagnosis: Squamous cell carcinoma  
 Microscopic Description: Invasive nests of atypical squamous cells with keratinization and intercellular bridges.  
