@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 import openai
 import os
 
+pip install python-dotenv
 from dotenv import load_dotenv
 
 load_dotenv()  # Load variables from .env
