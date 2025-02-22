@@ -33,29 +33,33 @@ Immunohistochemistry: Positive for p40 and CK5/6.
 # POST endpoint for comparing user response to the standard pathology report
 @app.post("/compare")
 async def compare_text(request: Request):
-    data = await request.json()
-    user_response = data["text"]
+    try:
+        data = await request.json()
+        user_response = data["text"]
 
-    prompt = f"""
-    Compare the following user response to the standard pathology report.
-    
-    **User Response:**  
-    {user_response}
+        prompt = f"""
+        Compare the following user response to the standard pathology report.
+        
+        **User Response:**  
+        {user_response}
 
-    **Correct Answer:**  
-    {STANDARD_ANSWER}
+        **Correct Answer:**  
+        {STANDARD_ANSWER}
 
-    Provide feedback on accuracy, completeness, and terminology. Suggest corrections.
-    """
+        Provide feedback on accuracy, completeness, and terminology. Suggest corrections.
+        """
 
-    # Update the call to the new API method (openai.Completion.create)
-    response = openai.Completion.create(
-        model="gpt-4",  # Or any other model you are using
-        prompt=prompt,
-        max_tokens=150  # Adjust max_tokens as necessary
-    )
+        response = openai.Completion.create(
+            model="gpt-4",  # or another model you are using
+            prompt=prompt,
+            max_tokens=150
+        )
 
-    return {"feedback": response.choices[0].text.strip()}
+        return {"feedback": response.choices[0].text.strip()}
+
+    except Exception as e:
+        return {"error": str(e)}  # This will return the error message in the response
+
 
 # POST endpoint for analyzing user-provided data (can be used for other types of analysis)
 @app.post("/analyze")
