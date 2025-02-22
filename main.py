@@ -22,9 +22,9 @@ app.add_middleware(
 
 # Standard pathology report for comparison
 STANDARD_ANSWER = """
-Diagnosis: Squamous cell carcinoma  
-Microscopic Description: Invasive nests of atypical squamous cells with keratinization and intercellular bridges.  
-Immunohistochemistry: Positive for p40 and CK5/6.  
+Diagnosis: Hodgkin lymphoma, nodular sclerosis type  
+Microscopic Description: Dense bands of fibrosis surrounding nodules of inflammatory cell infiltrate consisting of eosinophils and large, multinucleated cells with inclusion-like nucleoli that are suspicious for Reed-Sternberg cells  
+Immunohistochemistry: Positive for PAX5 (weak), CD30, CD15.  
 """
 
 @app.post("/compare")
