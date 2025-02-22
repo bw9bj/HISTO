@@ -2,4 +2,4 @@ fastapi
 uvicorn
 openai
 python-dotenv
-fastapi.middleware.cors
+fastapi[all]  # This will ensure CORS and other dependencies are installed
