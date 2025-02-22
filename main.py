@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 import openai
 import os
-
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,22 +18,19 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-# Load OpenAI API key from environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
 # Root endpoint to handle GET requests at '/'
 @app.get("/")
 async def root():
     return {"message": "FastAPI is running!"}
 
-# Your other endpoints (e.g., /compare) go here
-
+# Standard Answer for Comparison
 STANDARD_ANSWER = """
 Diagnosis: Squamous cell carcinoma  
 Microscopic Description: Invasive nests of atypical squamous cells with keratinization and intercellular bridges.  
 Immunohistochemistry: Positive for p40 and CK5/6.  
 """
 
+# POST endpoint for comparing user response to the standard pathology report
 @app.post("/compare")
 async def compare_text(request: Request):
     data = await request.json()
@@ -52,11 +48,18 @@ async def compare_text(request: Request):
     Provide feedback on accuracy, completeness, and terminology. Suggest corrections.
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "system", "content": "You are a pathology expert analyzing histology reports."},
-                  {"role": "user", "content": prompt}]
+    # Update the call to the new API method (openai.Completion.create)
+    response = openai.Completion.create(
+        model="gpt-4",  # Or any other model you are using
+        prompt=prompt,
+        max_tokens=150  # Adjust max_tokens as necessary
     )
 
-    return {"feedback": response["choices"][0]["message"]["content"]}
+    return {"feedback": response.choices[0].text.strip()}
 
+# POST endpoint for analyzing user-provided data (can be used for other types of analysis)
+@app.post("/analyze")
+async def analyze(request: Request):
+    data = await request.json()  # Read the JSON data sent in the POST request
+    # Process the data here (for example, apply some analysis)
+    return {"message": "Analysis complete", "data": data}
