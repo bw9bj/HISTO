@@ -1,7 +1,9 @@
 import logging
 import json
 from fastapi import FastAPI, Request
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables (make sure your OPENAI_API_KEY is in your .env file)
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Create FastAPI app
 app = FastAPI()
@@ -60,21 +61,19 @@ async def compare_text(request: Request):
         """
 
         # Call OpenAI's new ChatCompletion API (1.0.0+)
-        response = openai.ChatCompletion.create(
-            model="gpt-4",  # You can change this model depending on your use case
-            messages=[
-                {"role": "system", "content": "You are a pathology expert analyzing histology reports."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=150
-        )
+        response = client.chat.completions.create(model="gpt-4",  # You can change this model depending on your use case
+        messages=[
+            {"role": "system", "content": "You are a pathology expert analyzing histology reports."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150)
 
         # Log the full response to inspect its structure
         logger.debug(f"Full OpenAI response: {json.dumps(response, indent=2)}")
 
         # Extract feedback from the OpenAI response (adjust based on response structure)
-        if 'choices' in response and len(response['choices']) > 0:
-            feedback = response['choices'][0].get('message', {}).get('content', 'No feedback available')
+        if 'choices' in response and len(response.choices) > 0:
+            feedback = response.choices[0].get('message', {}).get('content', 'No feedback available')
         else:
             feedback = 'No feedback provided by the model'
 
