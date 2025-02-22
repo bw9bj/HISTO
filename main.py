@@ -55,7 +55,16 @@ async def compare_text(request: Request):
             max_tokens=150
         )
 
-        return {"feedback": response.choices[0].text.strip()}
+        # Debugging: print the full response object
+        print(response)  # This will output the response to the logs
+
+        # Now, ensure you're accessing the response correctly
+        if 'choices' in response and len(response['choices']) > 0:
+            feedback = response['choices'][0].get('text', 'No feedback available')
+        else:
+            feedback = 'No feedback provided by the model'
+
+        return {"feedback": feedback}
 
     except Exception as e:
         return {"error": str(e)}  # This will return the error message in the response
