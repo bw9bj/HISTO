@@ -61,7 +61,7 @@ async def compare_text(request: Request):
         """
 
         # Call OpenAI's new ChatCompletion API (1.0.0+)
-        response = client.chat.completions.create(model="gpt-4",  # You can change this model depending on your use case
+        response = client.chat.completions.create(model="gpt-4o-mini",  # You can change this model depending on your use case
         messages=[
             {"role": "system", "content": "You are a pathology expert analyzing histology reports."},
             {"role": "user", "content": prompt}
