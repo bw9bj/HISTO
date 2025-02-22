@@ -2,9 +2,9 @@ import logging
 import json
 from fastapi import FastAPI, Request
 from openai import OpenAI
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 import os
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
