@@ -1,3 +1,4 @@
+logging
 fastapi
 uvicorn
 openai
