@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from openai import OpenAI
 import os
+import json
 
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,19 +21,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dictionary of standard answers keyed by module ID
-STANDARD_ANSWERS = {
-    "moduleLN": """
-Diagnosis: Hodgkin lymphoma, nodular sclerosis type  
-Microscopic Description: Dense nodules surrounded by fibrous bands. Eosinophilic infiltrate and binucleate Reed-Sternberg cells with prominent nucleoli  
-IHC: Stains positive for CD30, CD15, and PAX5.  
-""",
-    "moduleColon": """
-Diagnosis: Sessile serrated lesion  
-Microscopic Description: Sawtooth serrations in the epithelium, abundant mucin, and basal crypt dilation.  
-""",
-    # Add more modules as needed
-}
+# Load standard answers from JSON
+with open("correct_answers.json") as f:
+    STANDARD_ANSWERS = json.load(f)
 
 @app.post("/compare")
 async def compare_text(request: Request):
