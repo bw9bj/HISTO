@@ -45,7 +45,7 @@ Compare the following user response to the standard pathology report.
 **Correct Answer:**  
 {standard_answer}
 
-Provide feedback on accuracy, completeness, and terminology using an encouraging style. Suggest corrections in an encouraging style.
+Provide feedback on accuracy, completeness, and terminology. Suggest corrections. Use an overall encouraging, but brief style.
 """
 
     response = client.chat.completions.create(
